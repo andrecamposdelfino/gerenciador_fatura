@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAdd_Compras">
+    <property name="title">
+     <string>Novo</string>
+    </property>
+    <widget class="QMenu" name="menuNota_de_Debito">
+     <property name="title">
+      <string>Nota de Debito</string>
+     </property>
+     <addaction name="btnAddCliente"/>
+     <addaction name="btnCriarNota"/>
+    </widget>
+    <addaction name="btnChamaFormAdd"/>
+    <addaction name="menuNota_de_Debito"/>
+   </widget>
+   <addaction name="menuAdd_Compras"/>
+  </widget>
+  <action name="btnChamaFormAdd">
+   <property name="icon">
+    <iconset>
+     <normaloff>icones/cash_1538271.png</normaloff>icones/cash_1538271.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lançar Compras com Cartão</string>
+   </property>
+  </action>
+  <action name="btnAddCliente">
+   <property name="icon">
+    <iconset>
+     <normaloff>icones/businessman_998372.png</normaloff>icones/businessman_998372.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cadastro de Cliente</string>
+   </property>
+  </action>
+  <action name="btnCriarNota">
+   <property name="icon">
+    <iconset>
+     <normaloff>icones/file_419209.png</normaloff>icones/file_419209.png</iconset>
+   </property>
+   <property name="text">
+    <string>Criar Nota</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
