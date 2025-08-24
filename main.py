@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from datetime import *
 import pandas as pd
 from openpyxl.workbook import Workbook
-from db import criar, somar_valores, selecionar_todas_as_compras, criar_credor, listar_credor, criar_classificacao, listar_classificacao, criar_centro_de_custo, listar_centro_de_custo, selecionar_compras_mes_ano, criar_fatura, selecionar_fatura
-
+from db import criar, somar_valores, criar_nota, selecionar_todas_as_compras, criar_credor, listar_credor, criar_classificacao, listar_classificacao, criar_centro_de_custo, listar_centro_de_custo, selecionar_compras_mes_ano, criar_fatura, selecionar_fatura
+from num2words import num2words
 import requests
 
 valores = somar_valores()
@@ -325,6 +325,7 @@ def consultar_cliente():
 
 def salvar_nota():
     try:
+        # dados da empresa
         empresa = frm_nota_debito.txtRazao.text()
         endereco_empresa = frm_nota_debito.txtEndereco.text()
         numero_empresa = frm_nota_debito.txtNumero.text()
@@ -333,6 +334,9 @@ def salvar_nota():
         estado_empresa = frm_nota_debito.txtEstado.text()
         cnpj_empresa = frm_nota_debito.txtCnpj.text()
 
+          # This will print the value entered in the txtValor field
+
+        # dados do cliente
         cliente = frm_nota_debito.txtRazao_2.text()
         endereco_cliente = frm_nota_debito.txtEndereco_2.text()
         numero_cliente = frm_nota_debito.txtNumero_2.text()
@@ -341,9 +345,26 @@ def salvar_nota():
         estado_cliente = frm_nota_debito.txtEstado_2.text()
         cnpj_cliente = frm_nota_debito.txtCnpj_2.text()
 
-        observacao = frm_nota_debito.txtObservacao.toPlainText()
-        valor = frm_nota_debito.txtValor.text()
+    
+        # dados da nota
+        numero_nota = frm_nota_debito.txtNumeroNota.text()
+        vencimento = frm_nota_debito.txtVencimento.text()
+        valor_total = float(frm_nota_debito.txtValorTotal.text())
+        periodo1 = frm_nota_debito.txtPeriodo1.text()
+        periodo2 = frm_nota_debito.txtPeriodo2.text()
+        servico = frm_nota_debito.cmbServico.currentText()
+        qtde = frm_nota_debito.txtQtde.text()
+        unidade = frm_nota_debito.txtUnidade.text()
+        valor_unitario = frm_nota_debito.txtValorUnitario.text()
+        valor_total_nota = frm_nota_debito.txtValorTotalNota.text()
+        valor_por_extenso = frm_nota_debito.txtValorPorExtenso.text()
+        
+        dados_bancarios = frm_nota_debito.cmbConta.currentText()
 
+        # campo observação
+        observacao = frm_nota_debito.txtObservacao.toPlainText()
+
+        # validação dos campos
         if not empresa or not endereco_empresa or not numero_empresa or not bairro_empresa or not cidade_empresa or not estado_empresa or not cnpj_empresa:
             msg_warning("Todos os campos da empresa devem ser preenchidos.")
             return
@@ -353,27 +374,50 @@ def salvar_nota():
         if not observacao:
             msg_warning("A descrição não pode ser vazia.")
             return
-        if not valor:
-            msg_warning("O valor não pode ser vazio.")
+        
+        if not numero_nota or not vencimento or not valor_total or not periodo1 or not periodo2 or not servico or not qtde or not unidade or not valor_unitario or not valor_total_nota or not valor_por_extenso:
+            msg_warning("Todos os campos da nota devem ser preenchidos.")
             return
+        
+        criar_nota(empresa, endereco_empresa, numero_empresa, bairro_empresa, cidade_empresa, estado_empresa, cnpj_empresa, cliente, endereco_cliente, numero_cliente, bairro_cliente, cidade_cliente, estado_cliente, cnpj_cliente, data.strftime("%d/%m/%Y"), numero_nota, vencimento, valor_total, valor_por_extenso, qtde, unidade, valor_unitario, valor_total_nota, periodo1, periodo2, servico, dados_bancarios, observacao)
+        msg_info("Nota de Débito salva com sucesso!")
+        
+        # caminho = QFileDialog.getSaveFileName(
+        #     None, 
+        #     "Salvar Nota de Débito", 
+        #     "nota_debito.txt", 
+        #     "Text Files (*.txt)"
+        # )[0]
 
-        caminho = QFileDialog.getSaveFileName(
-            None, 
-            "Salvar Nota de Débito", 
-            "nota_debito.txt", 
-            "Text Files (*.txt)"
-        )[0]
-
-        if caminho:
-            with open(caminho, 'w', encoding='utf-8') as file:
-                file.write(f"Empresa:\nRazão Social: {empresa}\nEndereço: {endereco_empresa}, {numero_empresa}\nBairro: {bairro_empresa}\nCidade: {cidade_empresa}\nEstado: {estado_empresa}\nCNPJ: {cnpj_empresa}\n\n")
-                file.write(f"Cliente:\nRazão Social: {cliente}\nEndereço: {endereco_cliente}, {numero_cliente}\nBairro: {bairro_cliente}\nCidade: {cidade_cliente}\nEstado: {estado_cliente}\nCNPJ: {cnpj_cliente}\n\n")
-                file.write(f"Descrição:\n{observacao}\n\nValor: R$ {valor}\nData: {data.strftime('%d/%m/%Y')}\n")
-            msg_info("Nota de Débito salva com sucesso!")
-        else:
-            msg_warning("Operação de salvar cancelada.")
+        # if caminho:
+        #     with open(caminho, 'w', encoding='utf-8') as file:
+        #         file.write(f"Empresa:\nRazão Social: {empresa}\nEndereço: {endereco_empresa}, {numero_empresa}\nBairro: {bairro_empresa}\nCidade: {cidade_empresa}\nEstado: {estado_empresa}\nCNPJ: {cnpj_empresa}\n\n")
+        #         file.write(f"Cliente:\nRazão Social: {cliente}\nEndereço: {endereco_cliente}, {numero_cliente}\nBairro: {bairro_cliente}\nCidade: {cidade_cliente}\nEstado: {estado_cliente}\nCNPJ: {cnpj_cliente}\n\n")
+        #         file.write(f"Descrição:\n{observacao}\n\nValor: R$ {valor}\nData: {data.strftime('%d/%m/%Y')}\n")
+        #     msg_info("Nota de Débito salva com sucesso!")
+        # else:
+        #     msg_warning("Operação de salvar cancelada.")
     except Exception as e:
         msg_warning(f"Erro ao salvar Nota de Débito: {e}")
+
+def converter_valor_por_extenso(valor):
+    valor = round(float(valor), 2)
+    reais = int(valor)
+    centavos = int(round((valor - reais) * 100))
+
+    extenso_reais = num2words(reais, lang='pt_BR').replace(',', ' e ')
+    extenso_centavos = num2words(centavos, lang='pt_BR')
+
+    resultado = f"{extenso_reais} reais"
+    if centavos > 0:
+        resultado += f" e {extenso_centavos} centavos"
+    # return resultado
+    frm_nota_debito.txtValorPorExtenso.setText(resultado)
+    frm_nota_debito.txtValorUnitario.setText(f"{valor/ int(frm_nota_debito.txtQtde.text()):.2f}")
+    frm_nota_debito.txtValorTotalNota.setText(f"{valor:.2f}")
+
+
+
 
 app = QtWidgets.QApplication([])
 frm_listar_lancamentos = uic.loadUi("listar_lancamentos.ui")
@@ -398,6 +442,7 @@ listar_lancamentos(frm_listar_lancamentos)
 frm_nota_debito.btnConsultar.clicked.connect(consultar_empresa)
 frm_nota_debito.btnConsultar_2.clicked.connect(consultar_cliente)
 frm_nota_debito.btnSalvarNota.clicked.connect(salvar_nota)
+frm_nota_debito.btnConverterPoExtenso.clicked.connect(lambda:converter_valor_por_extenso(frm_nota_debito.txtValorTotal.text()))
 
 # menu
 frm_listar_lancamentos.btnLancarAr.triggered.connect(frm_lancar_ar)

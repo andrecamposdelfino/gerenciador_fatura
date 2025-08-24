@@ -70,7 +70,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -753,6 +753,9 @@
         </property>
        </widget>
        <widget class="QLineEdit" name="txtValorUnitario">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>130</x>
@@ -775,7 +778,10 @@
          <string>VL. Total.</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="txtValorTotal_2">
+       <widget class="QLineEdit" name="txtValorTotalNota">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>230</x>
