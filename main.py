@@ -291,7 +291,89 @@ def salvar_dados_fatura():
 def open_nota_debito():
     frm_nota_debito.show()
 
+def consultar_empresa():
+    try:
+        cnpj = str(frm_nota_debito.txtCnpj.text())
+        api = f"https://open.cnpja.com/office/{cnpj}"
+        dados = requests.get(api).json()
+        
+        frm_nota_debito.txtRazao.setText(dados["company"]["name"])
+        frm_nota_debito.txtEndereco.setText(dados["address"]["street"])
+        frm_nota_debito.txtNumero.setText(dados["address"]["number"])
+        frm_nota_debito.txtBairro.setText(dados["address"]["district"])
+        frm_nota_debito.txtCidade.setText(dados["address"]["city"])
+        frm_nota_debito.txtEstado.setText(dados["address"]["state"])
 
+    except Exception as e:
+        msg_warning(f"Erro ao consultar credor: {e}") 
+
+def consultar_cliente():
+    try:
+        cnpj = str(frm_nota_debito.txtCnpj_2.text())
+        api = f"https://open.cnpja.com/office/{cnpj}"
+        dados = requests.get(api).json()
+        
+        frm_nota_debito.txtRazao_2.setText(dados["company"]["name"])
+        frm_nota_debito.txtEndereco_2.setText(dados["address"]["street"])
+        frm_nota_debito.txtNumero_2.setText(dados["address"]["number"])
+        frm_nota_debito.txtBairro_2.setText(dados["address"]["district"])
+        frm_nota_debito.txtCidade_2.setText(dados["address"]["city"])
+        frm_nota_debito.txtEstado_2.setText(dados["address"]["state"])
+
+    except Exception as e:
+        msg_warning(f"Erro ao consultar credor: {e}") 
+
+def salvar_nota():
+    try:
+        empresa = frm_nota_debito.txtRazao.text()
+        endereco_empresa = frm_nota_debito.txtEndereco.text()
+        numero_empresa = frm_nota_debito.txtNumero.text()
+        bairro_empresa = frm_nota_debito.txtBairro.text()
+        cidade_empresa = frm_nota_debito.txtCidade.text()
+        estado_empresa = frm_nota_debito.txtEstado.text()
+        cnpj_empresa = frm_nota_debito.txtCnpj.text()
+
+        cliente = frm_nota_debito.txtRazao_2.text()
+        endereco_cliente = frm_nota_debito.txtEndereco_2.text()
+        numero_cliente = frm_nota_debito.txtNumero_2.text()
+        bairro_cliente = frm_nota_debito.txtBairro_2.text()
+        cidade_cliente = frm_nota_debito.txtCidade_2.text()
+        estado_cliente = frm_nota_debito.txtEstado_2.text()
+        cnpj_cliente = frm_nota_debito.txtCnpj_2.text()
+
+        observacao = frm_nota_debito.txtObservacao.toPlainText()
+        valor = frm_nota_debito.txtValor.text()
+
+        if not empresa or not endereco_empresa or not numero_empresa or not bairro_empresa or not cidade_empresa or not estado_empresa or not cnpj_empresa:
+            msg_warning("Todos os campos da empresa devem ser preenchidos.")
+            return
+        if not cliente or not endereco_cliente or not numero_cliente or not bairro_cliente or not cidade_cliente or not estado_cliente or not cnpj_cliente:
+            msg_warning("Todos os campos do cliente devem ser preenchidos.")
+            return
+        if not observacao:
+            msg_warning("A descrição não pode ser vazia.")
+            return
+        if not valor:
+            msg_warning("O valor não pode ser vazio.")
+            return
+
+        caminho = QFileDialog.getSaveFileName(
+            None, 
+            "Salvar Nota de Débito", 
+            "nota_debito.txt", 
+            "Text Files (*.txt)"
+        )[0]
+
+        if caminho:
+            with open(caminho, 'w', encoding='utf-8') as file:
+                file.write(f"Empresa:\nRazão Social: {empresa}\nEndereço: {endereco_empresa}, {numero_empresa}\nBairro: {bairro_empresa}\nCidade: {cidade_empresa}\nEstado: {estado_empresa}\nCNPJ: {cnpj_empresa}\n\n")
+                file.write(f"Cliente:\nRazão Social: {cliente}\nEndereço: {endereco_cliente}, {numero_cliente}\nBairro: {bairro_cliente}\nCidade: {cidade_cliente}\nEstado: {estado_cliente}\nCNPJ: {cnpj_cliente}\n\n")
+                file.write(f"Descrição:\n{observacao}\n\nValor: R$ {valor}\nData: {data.strftime('%d/%m/%Y')}\n")
+            msg_info("Nota de Débito salva com sucesso!")
+        else:
+            msg_warning("Operação de salvar cancelada.")
+    except Exception as e:
+        msg_warning(f"Erro ao salvar Nota de Débito: {e}")
 
 app = QtWidgets.QApplication([])
 frm_listar_lancamentos = uic.loadUi("listar_lancamentos.ui")
@@ -311,6 +393,11 @@ frm_pricipal.btnAddCliente.triggered.connect(form_add_credor)
 frm_pricipal.btnCriarNota.triggered.connect(open_nota_debito)    
 
 listar_lancamentos(frm_listar_lancamentos)
+
+# formulario lancar nota de debito
+frm_nota_debito.btnConsultar.clicked.connect(consultar_empresa)
+frm_nota_debito.btnConsultar_2.clicked.connect(consultar_cliente)
+frm_nota_debito.btnSalvarNota.clicked.connect(salvar_nota)
 
 # menu
 frm_listar_lancamentos.btnLancarAr.triggered.connect(frm_lancar_ar)
