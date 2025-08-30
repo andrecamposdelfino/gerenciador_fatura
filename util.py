@@ -7,10 +7,9 @@
 # dados = selecionar_todas_as_compras()
 
 # df = pd.DataFrame(dados, columns=['ID', 'DATA_DA_COMPRA', 'DATA_DO_VENCIMENTO', 'CREDOR', 'PARCELAS', 'VALOR', 'CLASSIFICACAO', 'CENTRO_DE_CUSTO', 'BANCO'])
-# print(df.head())
+# print(df.head())00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 # arquivo_excell = 'compras.xlsx'
 # df.to_excel(arquivo_excell, index=False)
-# print(f"Dados exportados para {arquivo_excell} com sucesso!")   
 
 
 # data = datetime.now()

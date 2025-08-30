@@ -220,7 +220,6 @@ def gerar_planilha():
     except Exception as e:
         msg_warning(f"Erro ao gerar planilha: {e}")
 
-
 def consultar_lancamento_mes_ano():
     try:
         mes = frm_listar_lancamentos.txtPesquisaMes.currentText()
@@ -379,7 +378,7 @@ def salvar_nota():
             msg_warning("Todos os campos da nota devem ser preenchidos.")
             return
         
-        criar_nota(empresa, endereco_empresa, numero_empresa, bairro_empresa, cidade_empresa, estado_empresa, cnpj_empresa, cliente, endereco_cliente, numero_cliente, bairro_cliente, cidade_cliente, estado_cliente, cnpj_cliente, data.strftime("%d/%m/%Y"), numero_nota, vencimento, valor_total, valor_por_extenso, qtde, unidade, valor_unitario, valor_total_nota, periodo1, periodo2, servico, dados_bancarios, observacao)
+        criar_nota(empresa, endereco_empresa, numero_empresa, bairro_empresa, cidade_empresa, estado_empresa, cnpj_empresa, cliente, endereco_cliente, numero_cliente, bairro_cliente, cidade_cliente, estado_cliente, cnpj_cliente, numero_nota, vencimento, valor_total, periodo1, periodo2, servico, qtde, unidade, valor_unitario, valor_total_nota, valor_por_extenso, dados_bancarios, observacao)
         msg_info("Nota de Débito salva com sucesso!")
         
         # caminho = QFileDialog.getSaveFileName(
@@ -420,14 +419,14 @@ def converter_valor_por_extenso(valor):
 
 
 app = QtWidgets.QApplication([])
-frm_listar_lancamentos = uic.loadUi("listar_lancamentos.ui")
-frm_lancar_ars = uic.loadUi("frm_lancar_ars.ui")
-frm_add_credor = uic.loadUi("frm_add_credor.ui")
-frm_classificacao = uic.loadUi("frm_add_classificacao.ui")
-frm_centro_custo = uic.loadUi("frm_add_centro.ui")
-frm_editar_lancamentos = uic.loadUi("frm_editar_lancamento.ui")
-frm_pricipal = uic.loadUi("frm_principal.ui")
-frm_nota_debito = uic.loadUi("frm_nota_debito.ui")
+frm_listar_lancamentos = uic.loadUi("formularios/listar_lancamentos.ui")
+frm_lancar_ars = uic.loadUi("formularios/frm_lancar_ars.ui")
+frm_add_credor = uic.loadUi("formularios/frm_add_credor.ui")
+frm_classificacao = uic.loadUi("formularios/frm_add_classificacao.ui")
+frm_centro_custo = uic.loadUi("formularios/frm_add_centro.ui")
+frm_editar_lancamentos = uic.loadUi("formularios/frm_editar_lancamento.ui")
+frm_pricipal = uic.loadUi("formularios/frm_principal.ui")
+frm_nota_debito = uic.loadUi("formularios/frm_nota_debito.ui")
 # frm_listar_lancamentos.show()
 frm_pricipal.showMaximized()
 

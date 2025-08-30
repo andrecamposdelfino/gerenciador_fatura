@@ -97,10 +97,10 @@ def selecionar_fatura():
     dados = cursor.fetchall()
     return dados
 
-def criar_nota(empresa, endereco_empresa, numero_empresa, bairro_empresa, cidade_empresa, estado_empresa, cnpj_empresa, cliente, endereco_cliente, numero_cliente, bairro_cliente, cidade_cliente, estado_cliente, cnpj_cliente, data_emissao, numero_nota, vencimento, valor_total, valor_por_extenso, qtde, unidade, valor_unitario, valor_total_nota, periodo1, periodo2, servico, dados_bancarios, observacao):
+def criar_nota(empresa, endereco_empresa, numero_empresa, bairro_empresa, cidade_empresa, estado_empresa, cnpj_empresa, cliente, endereco_cliente, numero_cliente, bairro_cliente, cidade_cliente, estado_cliente, cnpj_cliente, numero_nota, vencimento, valor_total, periodo1, periodo2, servico, qtde, unidade, valor_unitario, valor_total_nota, valor_por_extenso, dados_bancarios, observacao):
     cursor.execute('''
-    INSERT INTO notas (empresa, endereco_empresa, numero_empresa, bairro_empresa, cidade_empresa, estado_empresa, cnpj_empresa, cliente, endereco_cliente, numero_cliente, bairro_cliente, cidade_cliente, estado_cliente, cnpj_cliente, data_emissao, numero_nota, vencimento, valor_total, valor_por_extenso, qtde, unidade, valor_unitario, valor_total_nota, periodo1, periodo2, servico, dados_bancarios, observacao)
+    INSERT INTO notas (empresa, endereco_empresa, numero_empresa, bairro_empresa, cidade_empresa, estado_empresa, cnpj_empresa, cliente, endereco_cliente, numero_cliente, bairro_cliente, cidade_cliente, estado_cliente, cnpj_cliente, numero_nota, vencimento, valor_total, periodo1, periodo2, servico, qtde, unidade, valor_unitario, valor_total_nota, valor_por_extenso, dados_bancarios, observacao)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ''', (empresa, endereco_empresa, numero_empresa, bairro_empresa, cidade_empresa, estado_empresa, cnpj_empresa, cliente, endereco_cliente, numero_cliente, bairro_cliente, cidade_cliente, estado_cliente, cnpj_cliente, data_emissao, numero_nota, vencimento, valor_total, valor_por_extenso, qtde, unidade, valor_unitario, valor_total_nota, periodo1, periodo2, servico, dados_bancarios, observacao))
+    ''', (empresa, endereco_empresa, numero_empresa, bairro_empresa, cidade_empresa, estado_empresa, cnpj_empresa, cliente, endereco_cliente, numero_cliente, bairro_cliente, cidade_cliente, estado_cliente, cnpj_cliente, numero_nota, vencimento, valor_total, periodo1, periodo2, servico, qtde, unidade, valor_unitario, valor_total_nota, valor_por_extenso, dados_bancarios, observacao))
     connection.commit()
 
